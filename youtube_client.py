@@ -1,4 +1,5 @@
 import re, time
+import html
 from googleapiclient.discovery import build
 
 class YouTubeClient:
@@ -25,10 +26,14 @@ class YouTubeClient:
                 maxResults=100, pageToken=token
             ).execute()
             for item in resp.get('items', []):
-                raw_txt = item['snippet']['topLevelComment']['snippet']['textDisplay']
-                txt = re.sub(r'<br\\s*/?>', '\n', raw_txt)
+                snippet = item['snippet']['topLevelComment']['snippet']
+                raw_txt = snippet.get('textDisplay', '')
+                like_count = snippet.get('likeCount', 0)
+                # unescape HTML entities then remove <br> tags
+                clean = html.unescape(raw_txt)
+                txt = re.sub(r'<br\s*/?>', '\n', clean, flags=re.IGNORECASE)
                 if not comment_filter.is_spam(txt):
-                    comments.append(txt)
+                    comments.append((txt, like_count))
             token = resp.get('nextPageToken')
             if not token:
                 break
