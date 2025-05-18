@@ -18,8 +18,9 @@ class YouTubeClient:
         items = resp.get('items', [])
         return items[0]['snippet']['title'] if items else 'Unknown Title'
 
-    def get_comments(self, video_id: str, comment_filter) -> list:
+    def get_comments(self, video_id: str, comment_filter, max_comments: int = 4000) -> list:
         comments, token = [], None
+        # fetch comments in pages of up to 100 until we reach max_comments
         while True:
             resp = self.youtube.commentThreads().list(
                 part='snippet', videoId=video_id,
@@ -34,8 +35,10 @@ class YouTubeClient:
                 txt = re.sub(r'<br\s*/?>', '\n', clean, flags=re.IGNORECASE)
                 if not comment_filter.is_spam(txt):
                     comments.append((txt, like_count))
+                    if len(comments) >= max_comments:
+                        return comments[:max_comments]
             token = resp.get('nextPageToken')
             if not token:
                 break
             time.sleep(0.1)
-        return comments
+        return comments[:max_comments]
