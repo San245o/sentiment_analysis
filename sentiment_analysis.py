@@ -32,11 +32,12 @@ class StreamlitApp:
         st.set_page_config(layout='wide')
         st.sidebar.title('YouTube Comment Sentiment Analysis')
         st.sidebar.info(
-        '⚠️ Please only paste videos with fewer than ~5000 comments\n'
-        'to avoid exceeding the YouTube API quota.'
+            '⚠️ Please only paste videos with fewer than ~1000 comments\n'
+            'to avoid exceeding the YouTube API quota.'
         )
         # Choose mode
         mode = st.sidebar.radio('Mode', ['Analyze', 'History'])
+        
         analysis_url = None
         persist = True  # whether to save analysis back to DB
         if mode == 'Analyze':
@@ -61,6 +62,21 @@ class StreamlitApp:
                     persist = False
         # Main title
         st.title('YouTube Comment Sentiment Analysis')
+        # mobile prompt to open sidebar
+        st.markdown(
+            "<div style='text-align:center; margin-bottom:10px;'>"
+            "<span style='font-size:20px; color:grey;'>⬅️ Tap or click here to open the sidebar</span>"
+            "</div>",
+            unsafe_allow_html=True
+        )
+        # brief APIs & features description
+        st.markdown(
+            "**APIs & Features:**  \n"
+            "- YouTube Data API v3 for fetching comments  \n"
+            "- VADER sentiment analysis  \n"
+            "- WordCloud, Altair & Plotly visualizations  \n"
+            "- Supabase storage with history view"
+        )
         # Run analysis if a URL is set
         if analysis_url:
             self._run_analysis(analysis_url, persist)
