@@ -65,7 +65,7 @@ class StreamlitApp:
         # mobile prompt to open sidebar
         st.markdown(
             "<div style='text-align:center; margin-bottom:10px;'>"
-            "<span style='font-size:20px; color:grey;'>⬅️ Tap or click here to open the sidebar</span>"
+            "<span style='font-size:20px; color:grey;'>⬅ top left arrow to to open the sidebar</span>"
             "</div>",
             unsafe_allow_html=True
         )
