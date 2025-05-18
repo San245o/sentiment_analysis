@@ -31,6 +31,10 @@ class StreamlitApp:
         # Configure page layout
         st.set_page_config(layout='wide')
         st.sidebar.title('YouTube Comment Sentiment Analysis')
+        st.sidebar.info(
+        '⚠️ Please only paste videos with fewer than ~1000 comments\n'
+        'to avoid exceeding the YouTube API quota.'
+        )
         # Choose mode
         mode = st.sidebar.radio('Mode', ['Analyze', 'History'])
         analysis_url = None
