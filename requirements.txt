@@ -7,3 +7,4 @@ altair
 textblob
 wordcloud
 vaderSentiment
+plotly
