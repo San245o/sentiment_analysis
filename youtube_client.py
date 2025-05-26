@@ -25,6 +25,7 @@ class YouTubeClient:
             resp = self.youtube.commentThreads().list(
                 part='snippet', videoId=video_id,
                 maxResults=100, pageToken=token
+                order = 'relevance'
             ).execute()
             for item in resp.get('items', []):
                 snippet = item['snippet']['topLevelComment']['snippet']
